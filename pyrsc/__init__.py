@@ -1,1 +1,1 @@
-from .src.util import cpuwatch
+from .src.util import watch

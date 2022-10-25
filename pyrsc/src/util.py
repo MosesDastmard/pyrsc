@@ -1,16 +1,18 @@
 import psutil
 import time
 
-class CpuWatch:
-    def __init__(self, max_perc:float=100, n_cores:int=0, sleep_interval:float=1.0, max_attempts:int=0):
-        self.max_perc = max_perc
+class Watch:
+    def __init__(self, cpu:float=0, n_cores:int=0, memory:float=0.0, sleep_interval:float=0.01, max_attempts:int=0):
+        self.cpu = cpu
         self.n_cores = n_cores
         self.sleep_interval = sleep_interval
+        self.memory = memory
         self.max_attempts = max_attempts
         
     def __trigger(self):
         cpu_percs = psutil.cpu_percent(percpu=True)
-        if sum([perc < self.max_perc for perc in cpu_percs]) >= self.n_cores:
+        memory_available = psutil.virtual_memory()[1]/1024**2
+        if (sum([(100 - perc) > self.cpu for perc in cpu_percs]) >= self.n_cores) & (memory_available > self.memory):
             return True
         return False
     
@@ -28,10 +30,10 @@ class CpuWatch:
     def __exit__(self, exc_type, exc_value, exc_tb):
         pass
     
-def cpuwatch(max_perc:float, n_cores:int, sleep_interval:float, max_attempts:int):
+def watch(cpu:float=0.0, n_cores:int=0, memory:float=0.0, sleep_interval:float=0.01, max_attempts:int=0):
     def inner(func):
         def wrapper(*args, **kwargs):
-            with CpuWatch(max_perc=max_perc, n_cores=n_cores, sleep_interval=sleep_interval, max_attempts=max_attempts) as watcher:
+            with Watch(cpu=cpu, n_cores=n_cores, memory=memory, sleep_interval=sleep_interval, max_attempts=max_attempts) as watcher:
                 return func(*args, **kwargs)
         return wrapper
     return inner

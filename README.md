@@ -9,7 +9,7 @@
 
 
 ```python
-from pyrsc import cpuwatch
+from pyrsc import watch
 from joblib import delayed, Parallel
 ```
 
@@ -17,7 +17,7 @@ I am trying to run several foo function at once, but I need them to run when at 
 
 
 ```python
-@cpuwatch(max_attempts=10, max_perc=5, n_cores=16, sleep_interval=0.001)
+@watch(max_attempts=10, cpu=5, n_cores=16, sleep_interval=0.001)
 def foo(x):
     print(x)
     
@@ -27,27 +27,30 @@ Parallel(n_jobs=32)(jobs);
 
     not enough resource is available to submit the job. Waiting for 0.001 seconds
     not enough resource is available to submit the job. Waiting for 0.001 seconds
-    not enough resource is available to submit the job. Waiting for 0.001 seconds
-    not enough resource is available to submit the job. Waiting for 0.001 seconds
-    not enough resource is available to submit the job. Waiting for 0.001 seconds
     0
+    not enough resource is available to submit the job. Waiting for 0.001 seconds
+    not enough resource is available to submit the job. Waiting for 0.001 seconds
     not enough resource is available to submit the job. Waiting for 0.001 seconds
     1
     not enough resource is available to submit the job. Waiting for 0.001 seconds
-    not enough resource is available to submit the job. Waiting for 0.001 seconds
-    not enough resource is available to submit the job. Waiting for 0.001 seconds
-    not enough resource is available to submit the job. Waiting for 0.001 seconds
-    not enough resource is available to submit the job. Waiting for 0.001 seconds
-    not enough resource is available to submit the job. Waiting for 0.001 seconds
-    not enough resource is available to submit the job. Waiting for 0.001 seconds
-    not enough resource is available to submit the job. Waiting for 0.001 seconds
     2
+    not enough resource is available to submit the job. Waiting for 0.001 seconds
     3
-    6
-    7
+    not enough resource is available to submit the job. Waiting for 0.001 seconds
     4
+    not enough resource is available to submit the job. Waiting for 0.001 seconds
     5
+    not enough resource is available to submit the job. Waiting for 0.001 seconds
+    6
+    not enough resource is available to submit the job. Waiting for 0.001 seconds
+    not enough resource is available to submit the job. Waiting for 0.001 seconds
+    not enough resource is available to submit the job. Waiting for 0.001 seconds
+    not enough resource is available to submit the job. Waiting for 0.001 seconds
+    not enough resource is available to submit the job. Waiting for 0.001 secondsnot enough resource is available to submit the job. Waiting for 0.001 seconds
+    
+    7
     8
+    not enough resource is available to submit the job. Waiting for 0.001 seconds
     9
 
 
@@ -55,7 +58,7 @@ Lets see what if we set `max_perc=100`
 
 
 ```python
-@cpuwatch(max_attempts=10, max_perc=100, n_cores=16, sleep_interval=0.001)
+@watch(max_attempts=10, cpu=50, n_cores=1, sleep_interval=0.001)
 def foo(x):
     print(x)
     
@@ -64,10 +67,10 @@ Parallel(n_jobs=32)(jobs);
 ```
 
     0
-    1
+    4
     2
     3
-    4
+    1
     5
     6
     7

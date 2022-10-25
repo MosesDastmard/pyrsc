@@ -7,7 +7,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name="pyrsc",
-    version="1.1.0",
+    version="1.2.0",
     author="Moses Dastmard",
     description="job handler in Python",
     long_description=long_description,
